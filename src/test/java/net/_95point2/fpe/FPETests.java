@@ -170,10 +170,11 @@ public class FPETests
 	@Test
 	public void testForDuplicates() throws Exception
 	{
-		final byte[] key = "Here is my secret keyjhhgg".getBytes();
+		//final byte[] key = "Here is my secret keyjhhgg".getBytes();
+		final byte[] key = "Here is my secret keyjhhggrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr".getBytes();
 	    final byte[] tweak = "tweaks8".getBytes();
 	    
-		for(int pow=1;pow<6;pow++)
+		for(int pow=15;pow<16;pow++)
 		{
 			int power = (int) Math.pow(10, pow);
 			
@@ -188,6 +189,7 @@ public class FPETests
 				BigInteger plain = BigInteger.valueOf(i);
 			    BigInteger enc = FPE.encrypt(modulus, plain, key, tweak);
 			    
+			    //System.out.println("plain=" + plain + " enc=" + enc);
 			    Assert.assertTrue("plain=" + plain + " enc=" + enc, plain.compareTo(enc) != 0);
 			    
 			    set.add(enc);
@@ -197,6 +199,36 @@ public class FPETests
 			System.out.println("Expected: "  + count + " Actual: " + set.size());
 			Assert.assertEquals(count, set.size());
 		}
+	}
+	
+	@Test
+	public void testDeterministicNumber() throws Exception
+	{
+		//final byte[] key = "Here is my secret keyjhhgg".getBytes();
+		//final byte[] key = "Here is my secret keyjhhggrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr".getBytes();
+		final byte[] key = "somekey".getBytes();
+    //final byte[] tweak = "tweaks8".getBytes();
+    final byte[] tweak = "twe".getBytes();
+	    
+    final BigInteger modulus = BigInteger.valueOf(1000000000000000L);
+    
+    final BigInteger plain = BigInteger.valueOf(111111111111111L);
+    final BigInteger encoded = BigInteger.valueOf(937700384987794L);
+
+    for (int i = 0; i < 100; i++) {
+      BigInteger enc = FPE.encrypt(modulus, plain, key, tweak);
+      
+      System.out.println("plain=" + plain + " enc=" + enc);
+      Assert.assertTrue("plain=" + plain + " enc=" + enc, plain.compareTo(encoded) != 0);
+      Assert.assertTrue("937700384987794=" + encoded, enc.equals(encoded));
+
+			BigInteger dec = FPE.decrypt(modulus, enc, key, tweak);
+      //final BigInteger enc_test = BigInteger.valueOf(22222L);
+			//BigInteger dec = FPE.decrypt(modulus, enc_test, key, tweak);
+      System.out.println("dec=" + dec + " enc=" + enc);
+      Assert.assertTrue("plain=" + plain + " dec=" + dec, plain.equals(dec));
+      Assert.assertTrue("111111111111111=" + dec, dec.equals(plain));
+    }
 	}
 	
 	
