@@ -10,12 +10,19 @@
   
   
   <dependencies>
-      <dependency>
-	    <groupId>junit</groupId>
-	    <artifactId>junit</artifactId>
-	    <version>4.12</version>
-	    <scope>test</scope>
-	</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.12</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.apache.nifi/nifi-spark-receiver -->
+		<dependency>
+			<groupId>org.apache.nifi</groupId>
+			<artifactId>nifi-spark-receiver</artifactId>
+			<version>0.6.0.1.2.0.0-91</version>
+		</dependency>
   </dependencies>
 
 
